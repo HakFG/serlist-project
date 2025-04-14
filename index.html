@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Lista de Séries</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <button id="add-series-btn">Adicionar</button>
+            <h2>Lists</h2>
+            <div class="sort-options">
+                <label for="sort-by">Ordenar por:</label>
+                <select id="sort-by">
+                    <option value="default">Padrão</option>
+                    <option value="score-desc">Nota (Maior para Menor)</option>
+                    <option value="score-asc">Nota (Menor para Maior)</option>
+                    <option value="title-asc">Título (A-Z)</option>
+                    <option value="title-desc">Título (Z-A)</option>
+                </select>
+            </div>
+            <ul class="list-filters">
+                <li><a href="#" data-status="all" class="active">All</a></li>
+                <li><a href="#" data-status="completed">Completed</a></li>
+                <li><a href="#" data-status="watching">Watching</a></li>
+                <li><a href="#" data-status="paused">Paused</a></li>
+                <li><a href="#" data-status="plan-to-watch">Plan to Watch</a></li>
+                <li><a href="#" data-status="dropped">Dropped</a></li>
+            </ul>
+        </aside>
+
+        <main class="series-list">
+            <section class="status-group" data-status="watching">
+                <h2>Watching</h2>
+                <div class="series-grid">
+                </div>
+            </section>
+
+            <section class="status-group" data-status="completed">
+                <h2>Completed</h2>
+                <div class="series-grid">
+                </div>
+            </section>
+
+            <section class="status-group" data-status="plan-to-watch">
+                <h2>Plan to Watch</h2>
+                <div class="series-grid">
+                </div>
+            </section>
+
+            <section class="status-group" data-status="paused">
+                <h2>Paused</h2>
+                <div class="series-grid">
+                </div>
+            </section>
+
+            <section class="status-group" data-status="dropped">
+                <h2>Dropped</h2>
+                <div class="series-grid">
+                </div>
+            </section>
+        </main>
+
+        <aside class="right-sidebar">
+            <h3>Opções</h3>
+        </aside>
+    </div>
+
+    <div id="add-series-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Adicionar Nova Série</h2>
+            <form id="add-series-form">
+                <label for="series-name">Nome da Série:</label>
+                <input type="text" id="series-name" required>
+
+                <label for="series-status">Status:</label>
+                <select id="series-status">
+                    <option value="watching">Watching</option>
+                    <option value="completed">Completed</option>
+                    <option value="plan-to-watch">Plan to Watch</option>
+                    <option value="paused">Paused</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+
+                <label for="series-score">Nota (0-10):</label>
+                <input type="number" id="series-score" min="0" max="10" step="0.1">
+
+                <label for="series-episodes">Número de Episódios:</label>
+                <input type="number" id="series-episodes" min="0">
+
+                <label for="series-cover-link">Link da Capa:</label>
+                <input type="url" id="series-cover-link">
+
+                <button type="submit">Adicionar Série</button>
+                <button type="button" class="cancel-button">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

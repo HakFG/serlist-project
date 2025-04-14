@@ -1,0 +1,292 @@
+/* Estilização da aba de Lists */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #121212; /* Cor de fundo escura */
+    color: #e0e0e0; /* Cor do texto clara */
+    display: flex; /* Ativa o layout flexível para os elementos filhos (container e sidebar direita) */
+}
+
+.container {
+    flex-grow: 1; /* O container principal ocupa o espaço restante */
+    display: flex; /* Mantém o layout flexível interno (sidebar esquerda e conteúdo principal) */
+}
+
+.sidebar {
+    width: 200px; /* Largura da barra lateral esquerda */
+    background-color: #1e1e1e;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex; /* Adiciona flexbox à sidebar para controlar o layout interno */
+    flex-direction: column; /* Organiza os itens verticalmente */
+}
+
+.sidebar button#add-series-btn {
+    background-color: #bb86fc;
+    color: #121212;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px; /* Adiciona espaço abaixo do botão */
+    font-weight: bold;
+    width: 100%; /* Ocupa a largura da barra lateral */
+    box-sizing: border-box;
+}
+
+.sidebar button#add-series-btn:hover {
+    background-color: #8a56ac;
+}
+
+.sidebar h2 {
+    color: #bb86fc;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Estilos para o container de ordenação */
+.sort-options {
+    margin-top: 20px; /* Adiciona espaço acima do "Ordenar por" */
+    margin-bottom: 15px; /* Adiciona espaço abaixo do dropdown */
+    color: #e0e0e0;
+}
+
+.sort-options label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #bb86fc; /* Cor destaque para o label */
+}
+
+.sort-options select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #444;
+    background-color: #292929;
+    color: #e0e0e0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+}
+
+.list-filters {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-filters li {
+    margin-bottom: 10px;
+}
+
+.list-filters a {
+    display: block;
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.list-filters a:hover {
+    background-color: #292929;
+}
+
+.list-filters a.active {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+.series-list {
+    flex-grow: 1; /* A lista de séries ocupa o espaço principal */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Estilos para a nova sidebar direita */
+.right-sidebar {
+    width: 100px; /* Largura da barra lateral direita (ajuste conforme necessário) */
+    background-color: #1e1e1e;
+    padding: 10px; /* Adicione algum padding interno se planeja colocar conteúdo */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Organiza os itens internos verticalmente */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    justify-content: flex-start; /* Alinha os itens ao topo por padrão */
+}
+
+.right-sidebar h3 {
+    color: #bb86fc;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em; /* Ajuste o tamanho da fonte conforme necessário */
+}
+
+/* Estilos para a modal (não foram alterados significativamente) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #292929;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#add-series-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #e0e0e0;
+}
+
+#add-series-form input[type=text],
+#add-series-form input[type=number],
+#add-series-form input[type=url],
+#add-series-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#add-series-form button[type=submit],
+.cancel-button {
+    background-color: #bb86fc;
+    color: #121212;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#add-series-form button[type=submit]:hover,
+.cancel-button:hover {
+    background-color: #8a56ac;
+}
+
+.series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.series-item {
+    background-color: #292929;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    padding: 0;
+}
+
+.series-item .cover-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2/3;
+}
+
+.series-item .cover-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.remove-series-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.remove-series-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.info-container {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: rgb(228, 230, 235);
+    box-sizing: border-box;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+}
+
+.info-container h3 {
+    margin: 0 0 5px 0;
+    font-size: 12px;
+    white-space: normal; /* Permite que o texto quebre para a próxima linha */
+    overflow: visible; /* Garante que o conteúdo não seja cortado */
+    text-overflow: unset; /* Remove qualquer efeito de ellipsis */
+    width: 100%; /* Garante que o título tente ocupar a largura total do container */
+    text-align: center; /* Mantém o título centralizado */
+}
+
+.info-container .meta {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.8em;
+}
+
+.info-container .score {
+    color: #64ffda;
+}
+
+.info-container .episodes {
+    color: #ff9800;
+}
