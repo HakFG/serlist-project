@@ -145,8 +145,12 @@ html {
     flex-direction: column; /* Organiza os itens (título e sinopse) em coluna */
     justify-content: flex-start; /* Alinha o conteúdo ao topo */
     flex-grow: 1; /* Permite que as informações ocupem o espaço restante */
+    top: 20px; /* Ajuste a distância do topo conforme necessário */
+    left: 20px; /* Ou right, dependendo de onde você quer posicionar */
+    position: absolute; /* Mantenha a posição absoluta para sobrepor à capa */
     padding-top: 0; /* Remova o padding superior, pois agora está ao lado da capa */
-    margin-left: 50px; /* Remova a margem esquerda que estava empurrando para a direita */
+    margin-left: 210px; /* Ajuste a margem esquerda para alinhar com a capa */
+    margin-top: 1px; /* Remova a margem superior negativa que estava posicionando o texto incorretamente */
 }
 
 .title {
@@ -154,6 +158,7 @@ html {
     margin-bottom: 1px;
     color: #d49fad;
     font-family: 'Adonais', serif;
+    word-break: break-word;
 }
 
 .synopsis {
@@ -162,6 +167,9 @@ html {
     line-height: 1.4;
     color: #eed4db;
     font-family: 'IM Fell DW Pica', serif;
+    overflow-wrap: break-word;
+    /* Remova qualquer altura máxima que possa estar aqui */
+    max-height: none;
 }
 
 .meta-info {
@@ -768,7 +776,7 @@ html {
     display: block;
     position: absolute;
     top: 10px;
-    left: 35px;
+    left: 0px;
     text-decoration: none;
     padding: 0;
     margin: 0;
