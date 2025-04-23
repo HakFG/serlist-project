@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Lista de Séries</title>
+    <title>hak's series list</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <button id="add-series-btn">Adicionar</button>
             <h2>Lists</h2>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Pesquisar título...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
             <div class="sort-options">
                 <label for="sort-by">Ordenar por:</label>
                 <select id="sort-by">
@@ -28,6 +33,7 @@
                 <li><a href="#" data-status="paused">Paused</a></li>
                 <li><a href="#" data-status="plan-to-watch">Plan to Watch</a></li>
                 <li><a href="#" data-status="dropped">Dropped</a></li>
+                <li><a href="#" data-status="upcoming">Upcoming</a></li>
             </ul>
         </aside>
 
@@ -61,6 +67,12 @@
                 <div class="series-grid">
                 </div>
             </section>
+
+            <section class="status-group" data-status="upcoming">
+                <h2>Upcoming</h2>
+                <div class="series-grid">
+                </div>
+            </section>
         </main>
 
         <aside class="right-sidebar">
@@ -83,19 +95,55 @@
                     <option value="plan-to-watch">Plan to Watch</option>
                     <option value="paused">Paused</option>
                     <option value="dropped">Dropped</option>
+                    <option value="upcoming">Upcoming</option>
                 </select>
 
                 <label for="series-score">Nota (0-10):</label>
                 <input type="number" id="series-score" min="0" max="10" step="0.1">
 
-                <label for="series-episodes">Número de Episódios:</label>
-                <input type="number" id="series-episodes" min="0">
+                <label for="series-watched-episodes">Episódios Assistidos:</label>
+                <input type="number" id="series-watched-episodes" min="0" value="0">
+
+                <label for="series-total-episodes">Total de Episódios:</label>
+                <input type="number" id="series-total-episodes" min="0" value="0">
 
                 <label for="series-cover-link">Link da Capa:</label>
                 <input type="url" id="series-cover-link">
 
                 <button type="submit">Adicionar Série</button>
                 <button type="button" class="cancel-button">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-series-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-edit-modal">&times;</span>
+            <h2>Editar Série</h2>
+            <form id="edit-series-form">
+                <input type="hidden" id="edit-series-id">
+
+                <label for="edit-series-status">Status:</label>
+                <select id="edit-series-status">
+                    <option value="watching">Watching</option>
+                    <option value="completed">Completed</option>
+                    <option value="plan-to-watch">Plan to Watch</option>
+                    <option value="paused">Paused</option>
+                    <option value="dropped">Dropped</option>
+                    <option value="upcoming">Upcoming</option>
+                </select>
+
+                <label for="edit-series-score">Nota (0-10):</label>
+                <input type="number" id="edit-series-score" min="0" max="10" step="0.1">
+
+                <label for="edit-series-watched-episodes">Episódios Assistidos:</label>
+                <input type="number" id="edit-series-watched-episodes" min="0" value="0">
+
+                <label for="edit-series-total-episodes">Total de Episódios:</label>
+                <input type="number" id="edit-series-total-episodes" min="0" value="0" readonly>
+
+                <button type="submit">Salvar Alterações</button>
+                <button type="button" class="cancel-button" id="cancel-edit-button">Cancelar</button>
             </form>
         </div>
     </div>
