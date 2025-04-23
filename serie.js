@@ -1,5 +1,3 @@
-// serie.js
-
 let currentSeriesId = null; // Variável para armazenar o ID da série atual
 
 function getSeriesId() {
@@ -26,6 +24,25 @@ function addGlobalCharacter(character) {
     }
 }
 
+function getGlobalStaff() {
+    const storedStaff = localStorage.getItem('globalStaff');
+    const staffList = storedStaff ? JSON.parse(storedStaff) : [];
+    console.log("Lista global de staff carregada:", staffList);
+    return staffList;
+}
+
+function saveGlobalStaff(staffList) {
+    localStorage.setItem('globalStaff', JSON.stringify(staffList));
+}
+
+function addGlobalStaff(staffMember) {
+    const globalStaff = getGlobalStaff();
+    if (!globalStaff.some(gs => gs.name.toLowerCase() === staffMember.name.toLowerCase())) {
+        globalStaff.push(staffMember);
+        saveGlobalStaff(globalStaff); // <--- CORREÇÃO: Adicionado para salvar a staff global
+    }
+}
+
 function displaySeriesDetails() {
     const seriesId = getSeriesId();
     currentSeriesId = seriesId;
@@ -35,7 +52,7 @@ function displaySeriesDetails() {
         if (storedSeries) {
             const seriesData = JSON.parse(storedSeries);
             const series = seriesData.find(item => item.id === seriesId);
-            console.log("Dados da série encontrados:", series); // <--- ESTA LINHA
+            console.log("Dados da série encontrados:", series);
 
             if (series) {
                 document.getElementById('series-title').textContent = series.name;
@@ -92,8 +109,8 @@ function displaySeriesDetails() {
                     backdrop.style.opacity = 1;
                 }
 
-                displayCharacters(); // Chama a função para exibir os personagens
-                displayStaff(); // Chama a função para exibir a staff
+                displayCharacters();
+                displayStaff();
 
             } else {
                 document.getElementById('series-title').textContent = 'Série não encontrada.';
@@ -106,13 +123,19 @@ function displaySeriesDetails() {
     }
 }
 
-document.getElementById('edit-series-info-btn').addEventListener('click', function() {
-    document.getElementById('edit-series-details-modal').style.display = 'block';
-});
+const editInfoButton = document.querySelector('.edit-buttons-container .edit-button:nth-child(1)');
+if (editInfoButton) {
+    editInfoButton.addEventListener('click', function() {
+        document.getElementById('edit-series-details-modal').style.display = 'block';
+    });
+}
 
-document.getElementById('edit-details-btn').addEventListener('click', function() {
-    document.getElementById('edit-spec-modal').style.display = 'block';
-});
+const editDetailsButton = document.querySelector('.edit-buttons-container .edit-button:nth-child(2)');
+if (editDetailsButton) {
+    editDetailsButton.addEventListener('click', function() {
+        document.getElementById('edit-spec-modal').style.display = 'block';
+    });
+}
 
 document.getElementById('save-series-details').addEventListener('click', function() {
     if (currentSeriesId) {
@@ -134,7 +157,7 @@ document.getElementById('save-series-details').addEventListener('click', functio
 
         updateSeriesData(currentSeriesId, updates);
         document.getElementById('edit-series-details-modal').style.display = 'none';
-        displaySeriesDetails(); // Atualiza a página com os novos dados
+        displaySeriesDetails();
     }
 });
 
@@ -161,7 +184,7 @@ document.getElementById('save-spec-details').addEventListener('click', function(
 
         updateSeriesData(currentSeriesId, updates);
         document.getElementById('edit-spec-modal').style.display = 'none';
-        displaySeriesDetails(); // Atualiza a página com os novos dados
+        displaySeriesDetails();
     }
 });
 
@@ -204,19 +227,19 @@ function openStaffTab() {
 document.addEventListener('DOMContentLoaded', () => {
     displaySeriesDetails();
     openCharactersTab();
-    populateExistingCharactersList(); // Carregar personagens globais ao carregar a página (se necessário)
+    populateExistingCharactersList();
+    populateExistingStaffList(); // Garante que a lista de staff existente seja carregada ao iniciar
 });
 
 function openAddCharacterModal() {
     const modal = document.getElementById('addCharacterModal');
     modal.style.display = 'block';
-    populateExistingCharactersList(); // Certifique-se de popular a lista ao abrir o modal
+    populateExistingCharactersList();
 }
 
 function closeAddCharacterModal() {
     const modal = document.getElementById('addCharacterModal');
     modal.style.display = 'none';
-    // Limpar os campos do formulário
     document.getElementById('new-character-name').value = '';
     document.getElementById('new-character-image').value = '';
     document.getElementById('new-character-role').value = '';
@@ -229,7 +252,7 @@ function saveNewCharacter() {
 
     if (name) {
         const newCharacter = { name, cover: image, role };
-        addGlobalCharacter(newCharacter); // Adicionar ao armazenamento global
+        addGlobalCharacter(newCharacter);
         saveCharacterToLocalStorage(newCharacter);
         displayCharacters();
         closeAddCharacterModal();
@@ -250,228 +273,295 @@ function saveCharacterToLocalStorage(character) {
                 if (!seriesData[seriesIndex].characters) {
                     seriesData[seriesIndex].characters = [];
                 }
-                // Verificar se o personagem já está na lista da série (pelo nome)
                 if (!seriesData[seriesIndex].characters.some(char => char.name.toLowerCase() === character.name.toLowerCase())) {
                     seriesData[seriesIndex].characters.unshift(character);
                     localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
                     displayCharacters();
                 } else {
                     alert(`O personagem "${character.name}" já foi adicionado a esta série.`);
+                }
             }
         }
     }
-}
 }
 
 function populateExistingCharactersList() {
-const existingCharactersSelect = document.getElementById('existing-characters-select');
-if (!existingCharactersSelect) return; // Verificar se o elemento existe
+    const existingCharactersSelect = document.getElementById('existing-characters-select');
+    if (!existingCharactersSelect) return;
 
-existingCharactersSelect.innerHTML = ''; // Limpar as opções existentes
+    existingCharactersSelect.innerHTML = '';
 
-const globalCharacters = getGlobalCharacters();
-globalCharacters.forEach(character => {
-    const option = document.createElement('option');
-    option.value = character.name; // Usamos o nome como valor para identificar o personagem
-    option.textContent = character.name;
-    existingCharactersSelect.appendChild(option);
-});
+    const globalCharacters = getGlobalCharacters();
+    globalCharacters.forEach(character => {
+        const option = document.createElement('option');
+        option.value = character.name;
+        option.textContent = character.name;
+        existingCharactersSelect.appendChild(option);
+    });
 }
 
 function addSelectedExistingCharacters() {
-const seriesId = getSeriesId();
-const existingCharactersSelect = document.getElementById('existing-characters-select');
-if (!existingCharactersSelect) return;
+    const seriesId = getSeriesId();
+    const existingCharactersSelect = document.getElementById('existing-characters-select');
+    if (!existingCharactersSelect) return;
 
-const selectedCharacterNames = Array.from(existingCharactersSelect.selectedOptions).map(option => option.value);
-const globalCharacters = getGlobalCharacters();
-const seriesCharacters = loadSeriesCharacters(); // Carregar personagens da série atual
+    const selectedCharacterNames = Array.from(existingCharactersSelect.selectedOptions).map(option => option.value);
+    const globalCharacters = getGlobalCharacters();
+    const seriesCharacters = loadSeriesCharacters();
 
-selectedCharacterNames.forEach(characterName => {
-    const foundGlobalCharacter = globalCharacters.find(gc => gc.name === characterName);
+    selectedCharacterNames.forEach(characterName => {
+        const foundGlobalCharacter = globalCharacters.find(gc => gc.name === characterName);
 
-    if (foundGlobalCharacter && !seriesCharacters.some(sc => sc.name.toLowerCase() === foundGlobalCharacter.name.toLowerCase())) {
-        saveCharacterToLocalStorage(foundGlobalCharacter);
-    } else if (seriesCharacters.some(sc => sc.name.toLowerCase() === foundGlobalCharacter.name.toLowerCase())) {
-        alert(`O personagem "${foundGlobalCharacter.name}" já está adicionado a esta série.`);
-    }
-});
+        if (foundGlobalCharacter && !seriesCharacters.some(sc => sc.name.toLowerCase() === foundGlobalCharacter.name.toLowerCase())) {
+            saveCharacterToLocalStorage(foundGlobalCharacter);
+        } else if (seriesCharacters.some(sc => sc.name.toLowerCase() === foundGlobalCharacter.name.toLowerCase())) {
+            alert(`O personagem "${foundGlobalCharacter.name}" já está adicionado a esta série.`);
+        }
+    });
 
-closeAddCharacterModal();
+    closeAddCharacterModal();
 }
 
 function loadSeriesCharacters() {
-const seriesId = getSeriesId();
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const currentSeries = seriesData.find(series => series.id === seriesId);
-        return currentSeries && currentSeries.characters ? currentSeries.characters : [];
+    const seriesId = getSeriesId();
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const currentSeries = seriesData.find(series => series.id === seriesId);
+            return currentSeries && currentSeries.characters ? currentSeries.characters : [];
+        }
     }
-}
-return [];
+    return [];
 }
 
 function addCharacterInput() {
-console.log("Função openAddCharacterModal() foi chamada!");
-document.getElementById('addCharacterModal').style.display = 'block';
-populateExistingCharactersList();
+    console.log("Função openAddCharacterModal() foi chamada!");
+    document.getElementById('addCharacterModal').style.display = 'block';
+    populateExistingCharactersList();
 }
 
 function addStaffInput() {
-console.log("Função addStaffInput() foi chamada!");
-document.getElementById('addStaffModal').classList.remove('hidden');
+    console.log("Função addStaffInput() foi chamada!");
+    document.getElementById('addStaffModal').style.display = 'block'; // Tornar o modal visível
+    populateExistingStaffList(); // Popular a lista de staff existente ao abrir o modal
 }
 
 function closeAddStaffModal() {
-document.getElementById('addStaffModal').classList.add('hidden');
-// Limpar os campos do formulário se desejar
-document.getElementById('new-staff-name').value = '';
-document.getElementById('new-staff-image').value = '';
-document.getElementById('new-staff-role').value = '';
+    const modal = document.getElementById('addStaffModal');
+    modal.style.display = 'none';
+    document.getElementById('new-staff-name').value = '';
+    document.getElementById('new-staff-image').value = '';
+    document.getElementById('new-staff-role').value = '';
 }
 
 function saveNewStaff() {
-const name = document.getElementById('new-staff-name').value;
-const image = document.getElementById('new-staff-image').value;
-const role = document.getElementById('new-staff-role').value;
+    const name = document.getElementById('new-staff-name').value;
+    const image = document.getElementById('new-staff-image').value;
+    const role = document.getElementById('new-staff-role').value;
 
-if (name) {
-    const newStaff = { cover: image, name: name, role: role };
-    saveStaffToLocalStorage(newStaff); // Sua função para salvar no localStorage
-    displayStaff(); // Sua função para exibir a staff
-    closeAddStaffModal();
-} else {
-    alert('O nome do membro da staff é obrigatório.');
-}
+    if (name) {
+        const newStaff = { cover: image, name: name, role: role };
+        addGlobalStaff(newStaff);
+        saveStaffToLocalStorage(newStaff);
+        displayStaff();
+        closeAddStaffModal();
+    } else {
+        alert('O nome do membro da staff é obrigatório.');
+    }
 }
 
 function saveStaffToLocalStorage(staff) {
-const seriesId = getSeriesId();
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
+    const seriesId = getSeriesId();
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
 
-        if (seriesIndex !== -1) {
-            if (!seriesData[seriesIndex].staff) {
-                seriesData[seriesIndex].staff = [];
+            if (seriesIndex !== -1) {
+                if (!seriesData[seriesIndex].staff) {
+                    seriesData[seriesIndex].staff = [];
+                }
+                seriesData[seriesIndex].staff.unshift(staff);
+                localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
+                displayStaff();
             }
-            seriesData[seriesIndex].staff.unshift(staff);
-            localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
-            displayStaff();
         }
     }
-}
 }
 
 function removeInput(button) {
-// Esta função não é mais usada com os modais
-console.warn("A função removeInput foi chamada, mas não é mais necessária com a implementação de modais.");
+    console.warn("A função removeInput foi chamada, mas não é mais necessária com a implementação de modais.");
 }
 
 function displayCharacters() {
-const seriesId = getSeriesId();
-const characterGrid = document.getElementById('character-grid');
-characterGrid.innerHTML = '';
+    const seriesId = getSeriesId();
+    const characterGrid = document.getElementById('character-grid');
+    characterGrid.innerHTML = '';
 
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const currentSeries = seriesData.find(series => series.id === seriesId);
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const currentSeries = seriesData.find(series => series.id === seriesId);
 
-        if (currentSeries && currentSeries.characters) {
-            currentSeries.characters.forEach((character, index) => {
-                const characterCard = document.createElement('div');
-                characterCard.classList.add('person-card');
-                characterCard.innerHTML = `
-                    <div class="remove-icon" onclick="removeCharacter(${index})">&times;</div>
-                    <img src="${character.cover || 'placeholder.png'}" alt="${character.name}">
-                    <div class="person-info">
-                        <div class="person-name">${character.name}</div>
-                        <div class="person-role">${character.role === 'main' ? 'Main' : 'Supporting'}</div>
-                    </div>
-                `;
-                characterGrid.appendChild(characterCard);
-            });
+            if (currentSeries && currentSeries.characters) {
+                currentSeries.characters.forEach((character, index) => {
+                    const characterCard = document.createElement('div');
+                    characterCard.classList.add('person-card');
+                    characterCard.innerHTML = `<div class="remove-icon" onclick="removeCharacter(${index})">&times;</div>
+                        <img src="${character.cover || 'placeholder.png'}" alt="${character.name}">
+                        <div class="person-info">
+                            <div class="person-name">${character.name}</div>
+                            <div class="person-role">${character.role === 'main' ? 'Main' : 'Supporting'}</div>
+                        </div>
+                    `;
+                    characterGrid.appendChild(characterCard);
+                });
+            }
         }
     }
-}
 }
 
 function displayStaff() {
-const seriesId = getSeriesId();
-const staffGrid = document.getElementById('staff-grid');
-staffGrid.innerHTML = '';
+    const seriesId = getSeriesId();
+    const staffGrid = document.getElementById('staff-grid');
+    staffGrid.innerHTML = '';
 
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const currentSeries = seriesData.find(series => series.id === seriesId);
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const currentSeries = seriesData.find(series => series.id === seriesId);
 
-        if (currentSeries && currentSeries.staff) {
-            currentSeries.staff.forEach((person, index) => {
-                const staffCard = document.createElement('div');
-                staffCard.classList.add('staff-card');
-                staffCard.innerHTML = `
-                    <div class="remove-icon" onclick="removeStaff(${index})">&times;</div>
-                    <img src="${person.cover || 'placeholder.png'}" alt="${person.name}">
-                    <div class="staff-info">
-                        <div class="staff-name">${person.name}</div>
-                        <div class="staff-role">${person.role ? person.role.replace('-', ' ') : 'N/A'}</div>
-                    </div>
-                `;
-                staffGrid.appendChild(staffCard);
-            });
-        }
-    }
-}
-}
-function removeCharacter(index) {
-const seriesId = getSeriesId();
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
-
-        if (seriesIndex !== -1 && seriesData[seriesIndex].characters && seriesData[seriesIndex].characters[index]) {
-            const characterName = seriesData[seriesIndex].characters[index].name;
-            if (confirm(`Tem certeza que deseja remover "${characterName}"?`)) {
-                seriesData[seriesIndex].characters.splice(index, 1);
-                localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
-                displayCharacters(); // Atualiza a lista de personagens na tela
+            if (currentSeries && currentSeries.staff) {
+                currentSeries.staff.forEach((person, index) => {
+                    const staffCard = document.createElement('div');
+                    staffCard.classList.add('staff-card');
+                    staffCard.innerHTML = `
+                        <div class="remove-icon" onclick="removeStaff(${index})">&times;</div>
+                        <img src="${person.cover || 'placeholder.png'}" alt="${person.name}">
+                        <div class="staff-info">
+                            <div class="staff-name">${person.name}</div>
+                            <div class="staff-role">${person.role ? person.role.replace('-', ' ') : 'N/A'}</div>
+                        </div>
+                    `;
+                    staffGrid.appendChild(staffCard);
+                });
             }
         }
     }
 }
+
+function removeCharacter(index) {
+    const seriesId = getSeriesId();
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
+
+            if (seriesIndex !== -1 && seriesData[seriesIndex].characters && seriesData[seriesIndex].characters[index]) {
+                const characterName = seriesData[seriesIndex].characters[index].name;
+                if (confirm(`Tem certeza que deseja remover "${characterName}"?`)) {
+                    seriesData[seriesIndex].characters.splice(index, 1);
+                    localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
+                    displayCharacters();
+                }
+            }
+        }
+    }
 }
 
 function removeStaff(index) {
-const seriesId = getSeriesId();
-if (seriesId) {
-    const storedSeries = localStorage.getItem('mySeriesList');
-    if (storedSeries) {
-        const seriesData = JSON.parse(storedSeries);
-        const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
+    const seriesId = getSeriesId();
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const seriesIndex = seriesData.findIndex(series => series.id === seriesId);
 
-        if (seriesIndex !== -1 && seriesData[seriesIndex].staff && seriesData[seriesIndex].staff[index]) {
-            const staffName = seriesData[seriesIndex].staff[index].name;
-            if (confirm(`Tem certeza que deseja remover "${staffName}"?`)) {
-                seriesData[seriesIndex].staff.splice(index, 1);
-                localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
-                displayStaff(); // Atualiza a lista de staff na tela
+            if (seriesIndex !== -1 && seriesData[seriesIndex].staff && seriesData[seriesIndex].staff[index]) {
+                const staffName = seriesData[seriesIndex].staff[index].name;
+                if (confirm(`Tem certeza que deseja remover "${staffName}"?`)) {
+                    seriesData[seriesIndex].staff.splice(index, 1);
+                    localStorage.setItem('mySeriesList', JSON.stringify(seriesData));
+                    displayStaff();
+                }
             }
         }
     }
 }
+
+function populateExistingStaffList() {
+    const existingStaffSelect = document.getElementById('existing-staff-select');
+    if (!existingStaffSelect) return;
+
+    existingStaffSelect.innerHTML = '';
+
+    const globalStaff = getGlobalStaff();
+    console.log("Dados da globalStaff dentro de populate:", globalStaff);
+    globalStaff.forEach(staff => {
+        const option = document.createElement('option');
+        option.value = staff.name;
+        option.textContent = staff.name;
+        existingStaffSelect.appendChild(option);
+    });
 }
+
+function addSelectedExistingStaff() {
+    const seriesId = getSeriesId();
+    const existingStaffSelect = document.getElementById('existing-staff-select');
+    if (!existingStaffSelect) return;
+
+    const selectedStaffNames = Array.from(existingStaffSelect.selectedOptions).map(option => option.value);
+    const globalStaff = getGlobalStaff();
+    const seriesStaff = loadSeriesStaff();
+
+    selectedStaffNames.forEach(staffName => {
+        const foundGlobalStaff = globalStaff.find(gs => gs.name === staffName);
+
+        if (foundGlobalStaff && !seriesStaff.some(ss => ss.name.toLowerCase() === foundGlobalStaff.name.toLowerCase())) {
+            saveStaffToLocalStorage(foundGlobalStaff);
+        } else if (seriesStaff.some(ss => ss.name.toLowerCase() === foundGlobalStaff.name.toLowerCase())) {
+            alert(`O membro da staff "${foundGlobalStaff.name}" já foi adicionado a esta série.`);
+        }
+    });
+
+    closeAddStaffModal();
+}
+
+function loadSeriesStaff() {
+    const seriesId = getSeriesId();
+    if (seriesId) {
+        const storedSeries = localStorage.getItem('mySeriesList');
+        if (storedSeries) {
+            const seriesData = JSON.parse(storedSeries);
+            const currentSeries = seriesData.find(series => series.id === seriesId);
+            return currentSeries && currentSeries.staff ? currentSeries.staff : [];
+        }
+    }
+    return [];
+}
+
+function addStaffInput() {
+    console.log("Função addStaffInput() foi chamada!");
+    document.getElementById('addStaffModal').style.display = 'block';
+    populateExistingStaffList();
+}
+
+function closeAddStaffModal() {
+    const modal = document.getElementById('addStaffModal');
+    modal.style.display = 'none';
+    document.getElementById('new-staff-name').value = '';
+    document.getElementById('new-staff-image').value = '';
+    document.getElementById('new-staff-role').value = '';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-displaySeriesDetails();
-openCharactersTab();
-populateExistingCharactersList();
+    displaySeriesDetails();
+    openCharactersTab();
+    populateExistingCharactersList();
+    populateExistingStaffList();
 });
