@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Série</title>
+    <link rel="stylesheet" href="serie.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="backdrop-container">
+        <img id="backdrop-image" class="backdrop" src="" alt="">
+        <div class="backdrop-overlay"></div>
+    </div>
+    <div class="main-content">
+        <button id="edit-series-info-btn" class="edit-button">Editar Info</button>
+        <button id="edit-details-btn" class="edit-button">Editar Detalhes</button>
+        <div class="cover-container">
+            <img id="cover-image" class="cover" src="" alt="">
+            <div class="cover-overlay">
+                <span id="series-episodes-overlay" class="episodes-overlay"></span>
+                <span id="series-score-overlay" class="score-overlay"></span>
+            </div>
+        </div>
+        <div class="info">
+            <h1 id="series-title" class="title"></h1>
+            <p id="series-synopsis" class="synopsis"></p>
+            <div id="series-meta" class="meta-info">
+                <span id="series-status"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="series-details-container">
+        <div class="series-details-item">
+            <span class="details-label">Estúdio:</span>
+            <span id="detail-studio" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Episódios:</span>
+            <span id="detail-episodes" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Status:</span>
+            <span id="detail-status" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Data de Início:</span>
+            <span id="detail-start-date" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Data de Fim:</span>
+            <span id="detail-finish-date" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Fonte:</span>
+            <span id="detail-source" class="details-value"></span>
+        </div>
+        <div class="series-details-item">
+            <span class="details-label">Gêneros:</span>
+            <span id="detail-genre" class="details-value"></span>
+        </div>
+    </div>
+
+    <div class="characters-staff-container">
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openCharactersTab()">Characters</button>
+            <button class="tab-button" onclick="openStaffTab()">Staff</button>
+        </div>
+        <div class="add-buttons-container">
+            <button class="add-person-button" onclick="openAddCharacterModal()">Adicionar Personagem</button>
+            <button class="add-person-button" onclick="addStaffInput()">Adicionar Staff</button>
+        </div>
+        <div id="characters-tab" class="tab-content active">
+            <div class="people-grid" id="character-grid">
+                </div>
+        </div>
+        <div id="staff-tab" class="tab-content hidden">
+            <div class="people-grid" id="staff-grid">
+                </div>
+        </div>
+    </div>
+
+    <div id="addCharacterModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAddCharacterModal()">&times;</span>
+            <h2>Adicionar Personagem</h2>
+    
+            <form id="add-new-character-form">
+                <label for="new-character-name">Nome:</label>
+                <input type="text" id="new-character-name" required>
+    
+                <label for="new-character-image">Link da Imagem (opcional):</label>
+                <input type="url" id="new-character-image">
+    
+                <label for="new-character-role">Função:</label>
+                <select id="new-character-role">
+                    <option value="main">Principal</option>
+                    <option value="supporting">Secundário</option>
+                </select>
+    
+                <button type="button" onclick="saveNewCharacter()">Adicionar Novo Personagem</button>
+            </form>
+    
+            <hr>
+    
+            <h2>Personagens Existentes</h2>
+            <label for="existing-characters-select">Selecione os Personagens:</label>
+            <select id="existing-characters-select" multiple size="5">
+                </select>
+    
+            <button type="button" onclick="addSelectedExistingCharacters()">Adicionar Selecionados</button>
+        </div>
+    </div>
+
+    <div id="addStaffModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAddStaffModal()">&times;</span>
+            <h2>Adicionar Novo Staff</h2>
+            <label for="new-staff-name">Nome:</label>
+            <input type="text" id="new-staff-name" name="new-staff-name">
+            <label for="new-staff-image">URL da Imagem:</label>
+            <input type="text" id="new-staff-image" name="new-staff-image">
+            <label for="new-staff-role">Função:</label>
+            <input type="text" id="new-staff-role" name="new-staff-role">
+            <div class="modal-buttons">
+                <button type="button" class="cancel" onclick="closeAddStaffModal()">Cancelar</button>
+                <button type="button" class="save" onclick="saveNewStaff()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" id="back-button">Voltar para a Lista</a>
+
+    <div id="edit-series-details-modal" class="modal hidden">
+        <div class="modal-content">
+            <span style="float:right;cursor:pointer;" onclick="document.getElementById('edit-series-details-modal').style.display='none'">&times;</span>
+            <h2>Editar Informações da Série</h2>
+            <label for="edit-synopsis">Sinopse:</label>
+            <textarea id="edit-synopsis"></textarea>
+
+            <label for="edit-backdrop-link">Link do Pôster:</label>
+            <input type="text" id="edit-backdrop-link">
+
+            <label for="edit-status">Status:</label>
+            <select id="edit-status">
+                <option value="watching">Assistindo</option>
+                <option value="completed">Completo</option>
+                <option value="paused">Pausado</option>
+                <option value="plan-to-watch">Planejo Assistir</option>
+                <option value="dropped">Dropado</option>
+                <option value="upcoming">Em Breve</option>
+            </select>
+
+            <label for="edit-score">Nota:</label>
+            <input type="number" id="edit-score" min="0" max="10">
+
+            <label for="edit-watched-episodes">Episódios Assistidos:</label>
+            <input type="number" id="edit-watched-episodes" min="0">
+
+            <label for="edit-total-episodes">Total de Episódios:</label>
+            <input type="number" id="edit-total-episodes" min="0">
+
+            <div class="modal-buttons">
+                <button type="button" class="cancel" onclick="document.getElementById('edit-series-details-modal').style.display='none'">Cancelar</button>
+                <button type="button" class="save" id="save-series-details">Salvar</button>
+            </div>
+        </div>
+    </div>
+    <aside class="sidebar">
+    </aside>
+    <div id="edit-spec-modal" class="modal hidden">
+        <div class="modal-content">
+            <span style="float:right;cursor:pointer;" onclick="document.getElementById('edit-spec-modal').style.display='none'">&times;</span>
+            <h2>Editar Detalhes da Série</h2>
+
+            <label for="edit-studio">Estúdio:</label>
+            <input type="text" id="edit-studio">
+
+            <label for="edit-episodes">Total de Episódios:</label>
+            <input type="number" id="edit-episodes" min="0">
+
+            <label for="edit-detail-status">Status:</label>
+            <select id="edit-detail-status">
+                <option value="releasing">Lançando</option>
+                <option value="completed">Completo</option>
+            </select>
+
+            <label for="edit-start-date">Data de Início:</label>
+            <input type="date" id="edit-start-date">
+
+            <label for="edit-finish-date">Data de Fim:</label>
+            <input type="date" id="edit-finish-date">
+
+            <label for="edit-source">Fonte:</label>
+            <select id="edit-source">
+                <option value="original">Original</option>
+                <option value="manga">Mangá</option>
+                <option value="manhwa">Manhwa</option>
+                <option value="novel">Novel</option>
+                <option value="light-novel">Light Novel</option>
+                <option value="game">Jogo</option>
+                <option value="other">Outro</option>
+            </select>
+
+            <label for="edit-genre">Gêneros (separados por vírgula):</label>
+            <input type="text" id="edit-genre">
+
+            <div class="modal-buttons">
+                <button type="button" class="cancel" onclick="document.getElementById('edit-spec-modal').style.display='none'">Cancelar</button>
+                <button type="button" class="save" id="save-spec-details">Salvar Detalhes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="serie.js"></script>
+</body>
+</html>
+
