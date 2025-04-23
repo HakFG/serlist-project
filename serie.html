@@ -15,8 +15,10 @@
         <div class="backdrop-overlay"></div>
     </div>
     <div class="main-content">
-        <button id="edit-series-info-btn" class="edit-button">Editar Info</button>
-        <button id="edit-details-btn" class="edit-button">Editar Detalhes</button>
+        <div class="edit-buttons-container">
+            <button class="edit-button">Editar Info</button>
+            <button class="edit-button">Editar Detalhes</button>
+        </div>
         <div class="cover-container">
             <img id="cover-image" class="cover" src="" alt="">
             <div class="cover-overlay">
@@ -31,6 +33,8 @@
                 <span id="series-status"></span>
             </div>
         </div>
+        <button id="edit-series-info-btn" class="edit-button">Editar Info</button>
+        <button id="edit-details-btn" class="edit-button">Editar Detalhes</button>
     </div>
 
     <div class="series-details-container">
@@ -75,11 +79,11 @@
         </div>
         <div id="characters-tab" class="tab-content active">
             <div class="people-grid" id="character-grid">
-                </div>
+            </div>
         </div>
         <div id="staff-tab" class="tab-content hidden">
             <div class="people-grid" id="staff-grid">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -87,30 +91,30 @@
         <div class="modal-content">
             <span class="close-button" onclick="closeAddCharacterModal()">&times;</span>
             <h2>Adicionar Personagem</h2>
-    
+
             <form id="add-new-character-form">
                 <label for="new-character-name">Nome:</label>
                 <input type="text" id="new-character-name" required>
-    
+
                 <label for="new-character-image">Link da Imagem (opcional):</label>
                 <input type="url" id="new-character-image">
-    
+
                 <label for="new-character-role">Função:</label>
                 <select id="new-character-role">
                     <option value="main">Principal</option>
                     <option value="supporting">Secundário</option>
                 </select>
-    
+
                 <button type="button" onclick="saveNewCharacter()">Adicionar Novo Personagem</button>
             </form>
-    
+
             <hr>
-    
+
             <h2>Personagens Existentes</h2>
             <label for="existing-characters-select">Selecione os Personagens:</label>
             <select id="existing-characters-select" multiple size="5">
-                </select>
-    
+            </select>
+
             <button type="button" onclick="addSelectedExistingCharacters()">Adicionar Selecionados</button>
         </div>
     </div>
@@ -118,21 +122,31 @@
     <div id="addStaffModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" onclick="closeAddStaffModal()">&times;</span>
-            <h2>Adicionar Novo Staff</h2>
-            <label for="new-staff-name">Nome:</label>
-            <input type="text" id="new-staff-name" name="new-staff-name">
-            <label for="new-staff-image">URL da Imagem:</label>
-            <input type="text" id="new-staff-image" name="new-staff-image">
-            <label for="new-staff-role">Função:</label>
-            <input type="text" id="new-staff-role" name="new-staff-role">
-            <div class="modal-buttons">
-                <button type="button" class="cancel" onclick="closeAddStaffModal()">Cancelar</button>
-                <button type="button" class="save" onclick="saveNewStaff()">Salvar</button>
-            </div>
+            <h2>Adicionar Staff</h2>
+
+            <form id="add-new-staff-form">
+                <label for="new-staff-name">Nome:</label>
+                <input type="text" id="new-staff-name" required>
+
+                <label for="new-staff-image">Link da Imagem (opcional):</label>
+                <input type="url" id="new-staff-image">
+
+                <label for="new-staff-role">Função:</label>
+                <input type="text" id="new-staff-role">
+
+                <button type="button" onclick="saveNewStaff()">Adicionar Novo Staff</button>
+            </form>
+
+            <hr>
+
+            <h2>Staff Existente</h2>
+            <label for="existing-staff-select">Selecione a Staff:</label>
+            <select id="existing-staff-select" multiple size="5">
+            </select>
+
+            <button type="button" onclick="addSelectedExistingStaff()">Adicionar Selecionados</button>
         </div>
     </div>
-
-    <a href="index.html" id="back-button">Voltar para a Lista</a>
 
     <div id="edit-series-details-modal" class="modal hidden">
         <div class="modal-content">
@@ -170,6 +184,9 @@
         </div>
     </div>
     <aside class="sidebar">
+        <a href="index.html" id="back-to-main">
+            <img src="https://files.catbox.moe/9rsfxs.png" alt="Voltar para a Lista" style="width: 90px; height: auto; border: none;">
+        </a>
     </aside>
     <div id="edit-spec-modal" class="modal hidden">
         <div class="modal-content">
@@ -214,8 +231,11 @@
             </div>
         </div>
     </div>
+    <aside class="sidebar-left">
+    </aside>
 
+<aside class="sidebar-right">
+    </aside>
     <script src="serie.js"></script>
 </body>
 </html>
-
