@@ -75,23 +75,25 @@ html {
 }
 
 .characters-staff-container {
-    margin-top: -558px;
+    margin-top: -410px;
     padding: 7px;
     flex-direction: column;
-    max-width: 950px;
+    max-width: 860px;
     flex-grow: 1;
-    margin-left: calc(13% + 200px); /* Ajustado para a nova largura da sidebar */
+    margin-left: calc(13% + 300px); /* Ajustado para a nova largura da sidebar */
+    z-index: 10; /* Um valor alto para garantir que fique na frente */
 }
 
 .series-details-container {
     margin-top: 15px;
     width: auto; /* Ajuste para automático para que a largura seja baseada no conteúdo */
-    max-width: 100px; /* Mantenha uma largura máxima para evitar que se estenda demais */
+    max-width: 200px; /* Defina uma largura máxima razoável para evitar que se estenda demais */
     font-family: 'Adonais', serif;
-    margin-left: calc(13% + 20px);
-    margin-right: calc(13% + 20px);
+    margin-left: calc(10% + 69px);
+    margin-right: calc(auto); /* Permite que a margem direita se ajuste */
     display: flex; /* Usamos flex para controlar a disposição dos itens filhos */
     flex-direction: column; /* Os itens serão dispostos em coluna */
+    align-items: flex-start; /* Alinha os itens à esquerda */
 }
 
 .cover-container {
@@ -357,17 +359,19 @@ html {
 .details-label {
     font-weight: bold;
     color: #ecf0f1;
-    font-size: 22px;
+    font-size: 16px; /* Reduzi um pouco a fonte para ocupar menos espaço */
     display: block; /* O rótulo fica em sua própria linha */
     margin-bottom: 2px; /* Adiciona um pequeno espaço abaixo do rótulo */
+    white-space: nowrap; /* Evita que o rótulo quebre para uma nova linha */
 }
 
 .details-value {
-    font-size: 20px;
+    font-size: 14px; /* Reduzi um pouco a fonte para ocupar menos espaço */
     display: block; /* O valor fica em sua própria linha, abaixo do rótulo */
     margin-top: 5px;
     text-transform: capitalize;
     color: #bdc3c7; /* Adicionei uma cor para o valor, caso não esteja herdando corretamente */
+    word-break: break-word; /* Garante que palavras longas quebrem a linha */
 }
 
 #edit-details-btn {
@@ -794,4 +798,23 @@ html {
 
 #back-to-main img:hover {
     opacity: 1;
+}
+.fixed-container {
+    position: relative;
+    top: 0px; /* Ajuste conforme necessário */
+    right: 20px; /* Ajuste conforme necessário */
+    width: auto; /* Ajuste a largura conforme o conteúdo ou necessidade */
+    /* Defina uma altura se precisar */
+}
+
+.characters-staff-container {
+    /* ... outros estilos que você já tem ... */
+    position: absolute;
+    top: 0; /* Posiciona no topo do .fixed-container */
+    left: 0; /* Posiciona na esquerda do .fixed-container */
+    width: 100%; /* Ocupa a largura do .fixed-container */
+    /* Se precisar de altura fixa ou rolagem */
+    /* height: 200px; */
+    /* overflow-y: auto; */
+    z-index: 10; /* Garante que fique na frente */
 }
