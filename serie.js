@@ -47,15 +47,19 @@ function displaySeriesDetails() {
                 const episodiosAssistidos = series.watchedEpisodes || 0;
                 const totalEpisodios = series.totalEpisodes || 0;
                 let episodiosTexto = '';
-                if (episodiosAssistidos > 0 && episodiosAssistidos === totalEpisodios && totalEpisodios > 0) {
-                    episodiosTexto = `${totalEpisodios}`;
-                } else if (totalEpisodios > 0) {
-                    episodiosTexto = `<span class="math-inline"><span class="math-inline">\{episodiosAssistidos\}/</span>{totalEpisodios}</span>`;
+
+                if (totalEpisodios > 0) {
+                    if (episodiosAssistidos === totalEpisodios) {
+                        episodiosTexto = `<span class="math-inline">${totalEpisodios}</span>`;
+                    } else {
+                        episodiosTexto = `<span class="math-inline">${episodiosAssistidos}/${totalEpisodios}</span>`;
+                    }
                 } else if (episodiosAssistidos > 0) {
-                    episodiosTexto = `${episodiosAssistidos}`;
+                    episodiosTexto = `<span class="math-inline">${episodiosAssistidos}</span>`;
                 } else {
                     episodiosTexto = '';
                 }
+
                 document.getElementById('series-episodes-overlay').innerHTML = episodiosTexto;
                 document.getElementById('series-score-overlay').textContent = series.score || '';
 
