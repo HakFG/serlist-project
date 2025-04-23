@@ -68,21 +68,23 @@
         </div>
     </div>
 
-    <div class="characters-staff-container">
-        <div class="tab-buttons">
-            <button class="tab-button active" onclick="openCharactersTab()">Characters</button>
-            <button class="tab-button" onclick="openStaffTab()">Staff</button>
-        </div>
-        <div class="add-buttons-container">
-            <button class="add-person-button" onclick="openAddCharacterModal()">Adicionar Personagem</button>
-            <button class="add-person-button" onclick="addStaffInput()">Adicionar Staff</button>
-        </div>
-        <div id="characters-tab" class="tab-content active">
-            <div class="people-grid" id="character-grid">
+    <div class="fixed-container">
+        <div class="characters-staff-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="openCharactersTab()">Characters</button>
+                <button class="tab-button" onclick="openStaffTab()">Staff</button>
             </div>
-        </div>
-        <div id="staff-tab" class="tab-content hidden">
-            <div class="people-grid" id="staff-grid">
+            <div class="add-buttons-container">
+                <button class="add-person-button" onclick="openAddCharacterModal()">Adicionar Personagem</button>
+                <button class="add-person-button" onclick="addStaffInput()">Adicionar Staff</button>
+            </div>
+            <div id="characters-tab" class="tab-content active">
+                <div class="people-grid" id="character-grid">
+                </div>
+            </div>
+            <div id="staff-tab" class="tab-content hidden">
+                <div class="people-grid" id="staff-grid">
+                </div>
             </div>
         </div>
     </div>
