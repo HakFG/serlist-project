@@ -56,7 +56,7 @@ function displaySeriesDetails() {
                 } else {
                     episodiosTexto = '';
                 }
-                document.getElementById('series-episodes-overlay').textContent = episodiosTexto;
+                document.getElementById('series-episodes-overlay').innerHTML = episodiosTexto;
                 document.getElementById('series-score-overlay').textContent = series.score || '';
 
                 document.getElementById('detail-studio').textContent = series.studio || 'N/A';
